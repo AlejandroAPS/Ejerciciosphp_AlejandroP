@@ -18,30 +18,30 @@
         </p>
     </form>
     <?php
-    // 1. Recibir los datos del formulario
+    //Recibir los datos del formulario
     $nombre   = trim($_POST['nombre']);
     $apellido = trim($_POST['apellido']);
     $dominio  = trim($_POST['dominio']);
 
-    // 2. Convertir todo a minúsculas
+    //Convertir todo a minúsculas
     $nombre   = strtolower($nombre);
     $apellido = strtolower($apellido);
     $dominio  = strtolower($dominio);
 
-    // 3. Obtener la primera letra del nombre
+    //Obtener la primera letra del nombre
     $primeraLetra = substr($nombre, 0, 1);
 
-    // 4. Limpiar el dominio si viene como URL completa
-    // Ej: https://www.google.com/search?q=empresa.com
+    //Limpiar el dominio si viene como URL completa
+    // En esto me ayudo GPT ,aparentemente si una url contiene 'q=' se detecta como tal
     if (strpos($dominio, 'q=') !== false) {
         $posicion = strpos($dominio, 'q=') + 2;
         $dominio = substr($dominio, $posicion);
     }
 
-    // 5. Construir el email
+    //Construir el email
     $email = $primeraLetra . $apellido . "@" . $dominio;
 
-    // 6. Mostrar resultado
+    //Mostrar resultado
     echo "Tu nuevo correo es: " . $email;
     
 ?>
