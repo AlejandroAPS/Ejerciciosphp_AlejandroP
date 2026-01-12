@@ -18,10 +18,24 @@
         </p>
     </form>
     <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {    //Esto es para que php no me de warnings,(revisa que se haya enviado el formulario)
 
+        $arraytemp = $_POST['temperatura'];
+        $tempmax = max($arraytemp);
+        $tempmin = min($arraytemp);
+        $tempmed = array_sum($arraytemp) / count($arraytemp);
 
+        echo "
+        <ul>
+            <h2>Datos de temperaturas</h2>
+            <li><strong>Promedio de las temperaturas: $tempmed</strong></li>
+            <li><strong>Temperatura máx: $tempmax</strong></li>
+            <li><strong>Temperatura min: $tempmin</strong></li>
+        </ul>
+        ";
+}
+?>
 
-    ?>
     
 </body>
 </html>

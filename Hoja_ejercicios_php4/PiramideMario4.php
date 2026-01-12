@@ -27,7 +27,7 @@
         echo "*";
     }
 
-    // 4. Salto de línea al terminar cada fila
+    //Salto de línea al terminar cada fila
     echo "<br>";
 }
 ?>
