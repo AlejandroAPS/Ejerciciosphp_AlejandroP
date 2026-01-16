@@ -17,7 +17,7 @@
         <label>Correo</label><br>
         <input type="text" name="correo" required><br><br>
 
-        <button type="submit">Calcular</button>
+        <button type="submit">Enviar</button>
     </form> 
 <?php
     
@@ -45,27 +45,27 @@
     }
     };
 
-    function guardarusuario($user,$correo,$usuariovalido){
+    function guardarusuario($user,$correo){
+        //Si se ha pulsado el boton ,guarda el mensaje con la informacion del ususario
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        if ($usuariovalido === false){
-            echo "Usuario y/o correo no validos";
-            return;
-        }
         $fecha = date("Y-m-d H:i:s");
         $mensaje = "[$fecha]Nuevo usuario:[$user],correo:[$correo] ". PHP_EOL;
-        file_put_contents("usuarios.txt", $mensaje, FILE_APPEND);
+        file_put_contents("usuarios.log", $mensaje, FILE_APPEND);
         }
-    }
+    };
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user = $_POST['usuario'];
     $correo = $_POST['correo'];
-    $usuariovalido = true;
-
-
-    comprobarusuario($user, $correo);
-    guardarusuario($user,$correo,$usuariovalido);
-    }
-
+    //Guarda usariovalido en el resultado que devuelva esta funcion
+    $usuariovalido = comprobarusuario($user, $correo);
+    //Si no es valido no genera nada
+    if ($usuariovalido === true){
+    guardarusuario($user,$correo);
+    }else{
+        echo "Usuario y/o correo no validos";
+    };
+    };
 ?>
     
 </body>

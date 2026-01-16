@@ -1,4 +1,0 @@
-[2026-01-14 11:45:10]Nuevo usuario:[hola],correo:[dsdadasdada@gmail.com] 
-[2026-01-14 11:45:48]Nuevo usuario:[hola],correo:[dsdadasdada@gmail.com] 
-[2026-01-14 11:46:43]Nuevo usuario:[hola],correo:[dsdadasdada@gmail.com] 
-[2026-01-14 11:46:50]Nuevo usuario:[dsadasda],correo:[hola@gmail.com] 
