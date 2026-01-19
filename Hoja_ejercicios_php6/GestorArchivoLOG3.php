@@ -19,82 +19,75 @@
     </form> 
     <?php
     
-    $nombre_archivo = $_POST['archivo'];
-
     function existencia_archivo($nombre_archivo){
 
-    try {
         if (!file_exists($nombre_archivo)) {
-            throw new Exception("El archivo '{$nombre_archivo}' no existe.");
+            $mensaje = "[" . date("Y-m-d H:i:s") . "] El archivo '{$nombre_archivo}' no existe." . PHP_EOL;
+            file_put_contents("errores.log", $mensaje, FILE_APPEND);    //Guarda el mensaje con file append en errores.log
+            return false;   //Si no existe devuelve false
         }
 
         // Si existe, devuelve true
         return true;
-
-    } catch (Exception $e) {
-        // Mensaje de error con fecha
-        $mensaje = "[" . date("Y-m-d H:i:s") . "] " . $e->getMessage() . PHP_EOL;
-        file_put_contents("errores.log", $mensaje, FILE_APPEND);    //Guarda el mensaje con file append en errores.log
-        //Relanza el error
-        throw $e;
-        return false;   //Si no existe devuelve false
-    };
     };
 
     function archivo_vacio($nombre_archivo) {
-    // Abrir el archivo en modo lectura
-    $archivo = fopen($nombre_archivo, "r");
-
-    // Comprobar si el archivo está vacío
-    if (filesize($nombre_archivo) === 0) {
-        echo "<h3><strong>EL ARCHIVO ESTA VACIO</strong></h3>";
-        fclose($archivo);
+        // Comprobar si el archivo está vacío
+        if (filesize($nombre_archivo) === 0) {
+            echo "<h3><strong>EL ARCHIVO EXISTE PERO ESTA VACIO</strong></h3>";
+            return true;
+        }
         return false;
-    }
-
-    // Cerrar archivo(se vuelve a cerrar aqui por si acaso) y devolver true si no está vacío
-    fclose($archivo);
-    return true;
     };
 
     function contar_lineas($nombre_archivo) {
-    // Abrir el archivo en modo lectura
-    $archivo = fopen($nombre_archivo, "r");
+        // Abrir el archivo en modo lectura
+        $archivo = fopen($nombre_archivo, "r");
 
-    // Comprobar si el archivo se pudo abrir
-    if ($archivo === false) {
-        echo "No se pudo abrir el archivo";
-        return;
+        // Comprobar si el archivo se pudo abrir
+        if ($archivo === false) {
+            echo "No se pudo abrir el archivo";
+            return 0;
+        }
+
+        $nlineas = 0;
+
+        // Cada vez que no se detecte el final del archivo,se suma uno al contador que cuenta la cantidad de lineas
+        while (($linea = fgets($archivo)) !== false) {
+            $nlineas++;
+        }
+
+        // Cerrar archivo
+        fclose($archivo);
+        
+        return $nlineas;
     }
 
-    $nlineas = 0;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    // Cada vez que no se detecte el final del archivo,se suma uno al contador que cuenta la cantidad de lineas
-    while (!feof($archivo)) {
-        fgets($archivo);
-        $nlineas++;
+        $nombre_archivo = $_POST['archivo'];
+
+        // Validacion para que solo acepte archivos .log
+        if (pathinfo($nombre_archivo, PATHINFO_EXTENSION) !== 'log') {
+            echo "<p><strong>ERROR: El archivo debe tener extension .log</strong></p>";
+        } else {
+            //Se revisa si existe
+            $existe = existencia_archivo($nombre_archivo);
+
+            if ($existe === true){
+                $vacio = archivo_vacio($nombre_archivo);
+                //Si existe se revisa si esta vacio
+                if ($vacio === false){
+                    $lineas = contar_lineas($nombre_archivo); //Si existe y no esta vacio devuelve cuantas lineas tiene con esta funcion
+                    echo "<p><strong>EL ARCHIVO EXISTE Y CONTIENE $lineas LINEAS</strong></p>";
+                };
+            }
+            else{   // y si no existe se manda mensaje tambien
+                echo "<p><strong>ERROR: EL ARCHIVO NO EXISTE O NO SE PUEDE ENCONTRAR</strong></p>";
+            }
+        }
     }
-
-    // Cerrar archivo
-    fclose($archivo);
-    
-    echo "El archivo $nombre_archivo, contiene $nlineas lineas de texto";
-}
-
-
-
-    $existe = existencia_archivo($nombre_archivo);
-    if ($existe === true){
-        $vacio = archivo_vacio($nombre_archivo);
-        if ($vacio === true){
-            contar_lineas($nombre_archivo);
-
-        };
-
-    }
-
-
-?>
+    ?>
     
 </body>
 </html>
