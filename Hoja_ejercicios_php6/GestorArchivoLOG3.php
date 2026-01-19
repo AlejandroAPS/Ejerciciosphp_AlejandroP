@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestor archivos</title>
 </head>
 <body>
     <?php   //Esto ha pedido el profe que lo PONGAMOS SIEMPRE para ver los todos los errores

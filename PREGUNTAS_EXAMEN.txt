@@ -1,0 +1,13 @@
+-QUE ES EL POLIMORFISMO-
+
+Adaptar los metodos heredados de la clase padre a una clase hija y que haga algo ligeramente distinto
+
+-QUE ES LA HERENCIA-
+
+Crear un clase que agarre TODAS las funciones y variables (luego se le puede añadir otras nuevas)
+
+-QUE ES LA ENCAPSULACION-
+
+Usar private para aumentar la seguridad de la app/pagina web para que no se pueda ver en ningun lado las variables y al hacer 
+el calculo de algo que se maneje todo de forma interna 
+
