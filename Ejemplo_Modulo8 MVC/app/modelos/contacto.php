@@ -28,14 +28,13 @@
 
         //static: crear un Contacto desde una línea del fichero
 
-        static function desdeLinea($linea)
+        static function desdeLinea($linea){
+            $partes = explode('|',trim($linea));
 
-        {
-            $partes = explode()
+            if (count($partes) !== 6){
+                throw new exception("Línea corrupta en agenda.txt:" . $linea);
+            }
+            return new contacto($partes[0], $partes[1], $partes[2], $partes[3], $partes[4], $partes[5]);
         }
-
-
-        
-
 
 ?>
