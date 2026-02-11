@@ -1,0 +1,342 @@
+🧠 CONTEXTO GENERAL: ¿Qué es el controlador?
+
+En MVC:
+
+Modelo → trabaja con datos (archivo txt)
+
+Vista → muestra HTML
+
+Controlador → decide qué hacer
+
+El controlador es como el jefe de tráfico:
+
+"¿Qué quiere el usuario? ¿Listar? ¿Crear? ¿Guardar? Vale, llamo al modelo y luego cargo la vista correcta."
+
+1️⃣ Constructor
+function __construct() {
+    $this->repositorio = new RepositorioNotas();
+}
+
+¿Qué hace?
+
+Cuando haces:
+
+$controlador = new ControladorNotas();
+
+
+PHP ejecuta automáticamente el constructor.
+
+Entonces aquí estamos diciendo:
+
+“Cada vez que se cree un controlador, crea también un repositorio.”
+
+¿Por qué?
+
+Porque el controlador necesita hablar con el modelo:
+
+$this->repositorio->obtenerTodas();
+$this->repositorio->agregar($nota);
+
+
+Si no lo creas en el constructor, no existiría.
+
+2️⃣ renderizar($vista, $datos)
+
+Este es el más importante mentalmente.
+
+private function renderizar($vista, $datos = []) {
+    extract($datos);
+    $archivoVista = __DIR__ . '/../Vistas/' . $vista . '.php';
+    $vistaContenido = $archivoVista;
+    require __DIR__ . '/../Vistas/layout.php';
+}
+
+
+Vamos línea por línea:
+
+🔹 extract($datos);
+
+Imagina que llamas:
+
+$this->renderizar('notas/listar', [
+    'notas' => $notas
+]);
+
+
+Entonces $datos vale:
+
+[
+   'notas' => $notas
+]
+
+
+Cuando haces:
+
+extract($datos);
+
+
+PHP crea automáticamente variables:
+
+$notas = $notas;
+
+
+Es como convertir el array en variables sueltas.
+
+Eso permite que en la vista puedas usar:
+
+foreach ($notas as $n)
+
+
+Si no usáramos extract, la vista no tendría acceso a $notas.
+
+🔹 $archivoVista = ...
+$archivoVista = __DIR__ . '/../Vistas/' . $vista . '.php';
+
+
+Si $vista es:
+
+notas/listar
+
+
+Se convierte en:
+
+.../app/Vistas/notas/listar.php
+
+
+Estamos construyendo la ruta real al archivo.
+
+🔹 $vistaContenido = $archivoVista;
+
+Esto es clave.
+
+Le estamos pasando la ruta al layout.
+
+🔹 require layout.php
+
+Aquí es donde ocurre la magia.
+
+En layout.php tienes algo como:
+
+<?php require $vistaContenido; ?>
+
+
+O sea:
+
+Carga el layout (estructura general HTML)
+
+Dentro del layout carga la vista concreta
+
+Es como decir:
+
+“Carga la plantilla general y mete dentro el contenido específico.”
+
+3️⃣ listar()
+public function listar() {
+    try {
+        $notas = $this->repositorio->obtenerTodas();
+        $this->renderizar('notas/listar', ['notas' => $notas]);
+    } catch (Exception $e) {
+        $this->registrarError('LISTAR', $e);
+        $this->renderizar('notas/listar', [
+            'notas' => [],
+            'error' => 'No se pudieron cargar las notas'
+        ]);
+    }
+}
+
+¿Qué está pasando realmente?
+
+Cuando el usuario entra en:
+
+index.php?accion=listar
+
+
+index.php llama a:
+
+$controlador->listar();
+
+
+Dentro:
+
+Paso 1
+
+Le pide al modelo:
+
+$notas = $this->repositorio->obtenerTodas();
+
+
+Eso lee el archivo notas.txt.
+
+Paso 2
+
+Le pasa esas notas a la vista.
+
+¿Por qué try/catch?
+
+Porque si:
+
+el archivo no existe
+
+está corrupto
+
+no se puede leer
+
+Se lanza una excepción.
+
+En ese caso:
+
+registramos error
+
+mostramos la vista pero con notas vacías
+
+mostramos mensaje de error
+
+Es programación defensiva.
+
+4️⃣ crear()
+public function crear() {
+    $this->renderizar('notas/crear', [
+        'antiguos' => ['texto' => '']
+    ]);
+}
+
+
+Esto solo muestra el formulario.
+
+¿Por qué mandamos 'antiguos'?
+
+Porque en el formulario tenemos:
+
+<textarea>
+<?php echo htmlspecialchars($antiguos['texto'] ?? ''); ?>
+</textarea>
+
+
+Si no enviamos eso, la variable no existiría.
+
+5️⃣ guardar()
+
+Este es el cerebro.
+
+$texto = trim($_POST['texto'] ?? '');
+
+¿Qué hace?
+
+Coge el texto enviado por el formulario
+
+Si no existe → usa ''
+
+trim() elimina espacios al inicio y final
+
+Validación
+if (strlen($texto) < 3)
+
+
+¿Por qué aquí?
+
+Porque el controlador decide si los datos son válidos.
+
+El modelo solo guarda.
+
+Si falla → lanzamos Exception.
+
+Lanzar excepción significa:
+
+"Algo no está bien, interrumpe el flujo normal."
+
+Crear la nota
+$id = time();
+$fecha = date('Y-m-d H:i:s');
+$nota = new Nota($id, $texto, $fecha);
+
+
+Estamos creando un objeto.
+
+No guardamos directamente texto.
+
+Creamos una entidad Nota.
+
+Guardar
+$this->repositorio->agregar($nota);
+
+
+El controlador no sabe cómo se guarda.
+
+Solo dice:
+
+“Oye repositorio, guarda esto.”
+
+Separación de responsabilidades.
+
+Redirección
+header("Location: index.php?accion=listar");
+exit;
+
+
+Esto es importantísimo.
+
+Después de guardar, no queremos que el usuario recargue el POST.
+
+Redirigimos a listar.
+
+Es patrón PRG (Post-Redirect-Get).
+
+Si hay error
+catch (Exception $e)
+
+
+Si algo falla:
+
+validación
+
+escritura en archivo
+
+etc
+
+Hacemos:
+
+registrar error
+
+volver al formulario
+
+mostrar el mensaje
+
+mantener el texto escrito
+
+6️⃣ registrarError()
+$archivoLog = __DIR__ . '/../../storage/errores.log';
+
+
+Subimos dos carpetas desde:
+
+app/Controladores
+
+
+Hasta:
+
+storage/
+
+file_put_contents(..., FILE_APPEND);
+
+
+FILE_APPEND significa:
+
+Añade al final, no sobrescribas.
+
+🎯 RESUMEN MENTAL
+
+Cuando alguien usa tu web:
+
+index.php decide acción
+
+llama al método del controlador
+
+el controlador:
+
+habla con modelo
+
+decide vista
+
+renderizar carga layout + vista
+
+El controlador es el director de orquesta.

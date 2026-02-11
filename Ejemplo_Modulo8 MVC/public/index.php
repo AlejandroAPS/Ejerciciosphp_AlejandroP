@@ -7,7 +7,7 @@
     //Incluimos el controlador principal
 
     require_once __DIR__ .
-    '/../app/Controladores/Conbtrolador/Contactos.php';
+    '/../app/Controladores/ControladorContactos.php';
 
     //Creamos el controlador
 

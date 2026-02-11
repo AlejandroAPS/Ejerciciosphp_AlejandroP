@@ -63,7 +63,7 @@
 
             if ($resultado === false){
                 throw new Exception("No se pudo reescribir agenda.txt al borrar");
-            }
+            } 
         }
 
     }

@@ -36,5 +36,5 @@
             }
             return new contacto($partes[0], $partes[1], $partes[2], $partes[3], $partes[4], $partes[5]);
         }
-
+    }
 ?>
