@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../Modelos/RepositorioNotas.php';
-require_once __DIR__ . '/../Modelos/notas.php';
+require_once __DIR__ . '/../Modelos/Notas.php';
 
 class ControladorNotas{
     private $repositorio;
@@ -46,7 +46,7 @@ class ControladorNotas{
             header("Location: index.php?accion=listar");
             exit;
         }catch(Exception $e){
-            $this->registrarError('GUARDAR', 'e');
+            $this->registrarError('GUARDAR', $e);
 
             $this->renderizar('notas/crear', ['error'=> $e->getMessage(), 'antiguos'=>['texto' => $texto]]);
         }
@@ -62,7 +62,7 @@ class ControladorNotas{
         $archivologo = __DIR__ . '/../../storage/errores.log';
         $fecha = date ('Y-m-d H:i:s');
 
-        $linea = $fecha . [" | " . $contexto . " | " . $e->getMessage() . "/n"];
+        $linea = $fecha . " | " . $contexto . " | " . $e->getMessage() . "/n";
 
         file_put_contents($archivoLog,$linea, FILE_APPEND);
     }
