@@ -10,7 +10,7 @@
         $this->fecha = $fecha;
     }
     // función para poner el formato a todas las variables de esta clase
-    public function alinea(){
+    public function aLinea(){
         return $this->id . "|" . $this->texto . "|" . $this->fecha;
     }
 

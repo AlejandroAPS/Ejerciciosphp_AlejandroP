@@ -22,12 +22,18 @@
 </head>
 <body>
     <div class="contenedor">
-        <h1>Crear notas nuevas</h1>
-        
-        <?php if (!empty($error)): ?>
+        <h2>Crear nueva nota</h2>
+            <!-- HAY QUE CONTINUAR EL CODIGO POR AQUI  -->
+            <?php if (!empty($error)): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
-            <!-- HAY QUE CONTINUAR EL CODIGO POR AQUI -->
+            <?php endif; ?>
+
+            <form method="POST" action="index.php?accion=guardar">
+                <label for="texto">Texto de la nota:</label>
+                <textarea name="texto" id="texto" rows="4"><?php echo htmlspecialchars($antiguos['texto'] ?? ''); ?></textarea>
+    
+                <button type="submit">Guardar Nota</button>
+            </form>
     </div>
     
 </body>

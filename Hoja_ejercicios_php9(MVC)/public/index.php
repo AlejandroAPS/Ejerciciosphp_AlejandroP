@@ -12,16 +12,16 @@ $accion = $_GET['accion'] ?? 'listar';
 
 switch ($accion){
     case 'listar':
-        //Llamar a listar
+        $controlador->listar();
         break;
 
     case 'crear':
-        //Llamar a crear
+        $controlador->crear();
         break;
     
     
     case 'guardar':
-        //Llamar a guardar
+        $controlador->guardar();
         break;
     
     default: 

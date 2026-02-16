@@ -59,10 +59,10 @@ class ControladorNotas{
     }
 
     private function registrarError($contexto, $e){
-        $archivologo = __DIR__ . '/../../storage/errores.log';
+        $archivoLog = __DIR__ . '/../../storage/errores.log';
         $fecha = date ('Y-m-d H:i:s');
 
-        $linea = $fecha . " | " . $contexto . " | " . $e->getMessage() . "/n";
+        $linea = $fecha . " | " . $contexto . " | " . $e->getMessage() . "\n";
 
         file_put_contents($archivoLog,$linea, FILE_APPEND);
     }
