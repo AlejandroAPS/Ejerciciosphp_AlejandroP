@@ -31,7 +31,7 @@
             <form method="POST" action="index.php?accion=guardar">
                 <label for="texto">Texto de la nota:</label>
                 <textarea name="texto" id="texto" rows="4"><?php echo htmlspecialchars($antiguos['texto'] ?? ''); ?></textarea>
-    
+                
                 <button type="submit">Guardar Nota</button>
             </form>
     </div>
