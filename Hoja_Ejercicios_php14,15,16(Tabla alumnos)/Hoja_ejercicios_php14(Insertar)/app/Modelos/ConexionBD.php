@@ -7,7 +7,7 @@ class ConexionBD {
         $host = "localhost";
         $dbname = "centro";
         $usuario = "root";
-        $password = "";
+        $password = "curso";
 
         $conexion = new PDO(
             "mysql:host=$host;dbname=$dbname;charset=utf8",
