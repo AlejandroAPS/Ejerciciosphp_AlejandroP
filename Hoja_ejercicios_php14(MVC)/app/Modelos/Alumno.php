@@ -13,6 +13,21 @@ class Alumno{
         $this->edad = $edad;
         $this->fechaCreacion = $fechaCreacion;
     }
+    public function getNombre() {
+        return $this->nombre;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getEdad() {
+        return $this->edad;
+    }
+
+    public function getFechaCreacion() {
+        return $this->fechaCreacion;
+    }
 }
 
 ?>

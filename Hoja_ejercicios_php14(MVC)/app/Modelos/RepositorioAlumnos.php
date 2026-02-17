@@ -1,35 +1,24 @@
 <?php
 
-    require_once __DIR__ . '/ConexionBD.php';
-    require_once __DIR__ . '/Alumno.php';
+require_once __DIR__ . '/ConexionBD.php';
+require_once __DIR__ . '/Alumno.php';
 
-    class RepositorioAlumnos{
+class RepositorioAlumnos {
 
-        public function insertar($alumnos){
-            try{
-                $conexion = conexionBD::obtenerConexion();
-                $sql = "INSERT INTO alumnos (nombre, email, edad, fecha_creacion)
-                        VALUES (:nombre, :email, :edad, :fecha)";
+    public function insertar(Alumno $alumno) {
 
-                $stmt = $conexion->prepare($sql);
+        $conexion = ConexionBD::obtenerConexion();
 
-                $stmt->execute([
-                    ':nombre' => $alumno->getNombre(),
-                    ':email' => $alumno->getEmail(),
-                    ':edad' => $alumno->getEdad(),
-                    ':fecha' => $alumno->getFechaCreacion()
-                ]);
+        $sql = "INSERT INTO alumnos (nombre, email, edad, fecha_creacion)
+                VALUES (:nombre, :email, :edad, :fecha)";
 
-                return true;
+        $stmt = $conexion->prepare($sql);
 
-            }catch(PDOException $e){
-
-                file_put_contents(
-                    __DIR__ . '/../../storage/errores.log',
-                    date('Y-m-d H:i:s') . " - " . $e->getMessage() . PHP_EOL,
-                    FILE_APPEND
-                );
-            }
-        }
-    };
-?>
+        return $stmt->execute([
+            ':nombre' => $alumno->getNombre(),
+            ':email'  => $alumno->getEmail(),
+            ':edad'   => $alumno->getEdad(),
+            ':fecha'  => $alumno->getFechaCreacion()
+        ]);
+    }
+}

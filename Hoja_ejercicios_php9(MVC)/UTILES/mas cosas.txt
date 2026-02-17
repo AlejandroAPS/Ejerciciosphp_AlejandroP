@@ -1,0 +1,17 @@
+🔴 TE FALTA / ESTÁ MAL
+
+El switch de index.php no llama a los métodos del controlador.
+
+Estás usando Notas.php en vez de Nota.php en algunos require_once.
+
+El método en Nota.php se llama alinea() y debería llamarse aLinea().
+
+El método registrarError() tiene errores (variable mal escrita y salto de línea incorrecto).
+
+No has terminado correctamente layout.php (falta menú y cargar la vista).
+
+No tienes completa la vista notas/crear.php.
+
+En listar.php no controlas correctamente el caso “No hay notas”.
+
+Estás mezclando HTML completo en vistas que deberían depender del layout.
