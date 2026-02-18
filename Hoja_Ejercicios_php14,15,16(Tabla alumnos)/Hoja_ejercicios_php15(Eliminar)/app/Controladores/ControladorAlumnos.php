@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../Modelos/Alumno.php';
+require_once __DIR__ . '/../Modelos/AccionesID.php';
 
 class ControladorAlumnos {
 
@@ -8,11 +8,12 @@ class ControladorAlumnos {
     public function listar() {
 
         try {
-
-            $modelo = new ModeloAlumno();
+            $modelo = new AccionesID();
             $alumnos = $modelo->obtenerTodos();
 
-            require __DIR__ . '/../Vistas/listado.php';
+            //Indicamos que vistas se van a ver(el listado y el layout)
+            $vistaContenido = __DIR__ . '/../Vistas/Alumnos/listado.php';
+            require __DIR__ . '/../Vistas/layout.php';
 
         } catch (Exception $e) {
 
@@ -33,7 +34,7 @@ class ControladorAlumnos {
 
             $id = $_GET['id'];
 
-            $modelo = new ModeloAlumno();
+            $modelo = new AccionesID();
             $alumno = $modelo->obtenerPorId($id);
 
             if (!$alumno) {
@@ -61,7 +62,7 @@ class ControladorAlumnos {
 
             $id = $_GET['id'];
 
-            $modelo = new ModeloAlumno();
+            $modelo = new AccionesID();
             $filasAfectadas = $modelo->borrarPorId($id);
 
             if ($filasAfectadas == 0) {

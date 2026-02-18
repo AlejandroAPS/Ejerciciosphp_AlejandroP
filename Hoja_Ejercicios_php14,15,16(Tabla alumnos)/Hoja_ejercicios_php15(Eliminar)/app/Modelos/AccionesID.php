@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/ConexionBD.php';
 
-class ModeloAlumno {
+class AccionesID {
 
     // Obtener todos los alumnos (listado mínimo para poder borrar)
     public function obtenerTodos() {
@@ -30,17 +30,20 @@ class ModeloAlumno {
     }
 
 
-    // DELETE principal del ejercicio
-    public function borrarPorId($id) {
+   // DELETE principal del ejercicio
+   public function borrarPorId($id) {
+    $conexion = ConexionBD::obtenerConexion();
 
-        $conexion = ConexionBD::obtenerConexion();
+    // Aseguramos que $id sea un entero
+    $id = (int) $id;
 
-        $sql = "DELETE FROM alumnos WHERE id = :id";
+    $sql = "DELETE FROM alumnos WHERE id = :id";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
 
-        $stmt = $conexion->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+    // rowCount devolverá 1 si se borró, 0 si no existía
+    return $stmt->rowCount();
+}
 
-        return $stmt->rowCount(); // devuelve cuántas filas se borraron
-    }
 }

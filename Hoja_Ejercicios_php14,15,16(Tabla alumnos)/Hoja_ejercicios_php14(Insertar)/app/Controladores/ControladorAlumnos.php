@@ -23,19 +23,28 @@ class ControladorAlumnos{
             return;
         }
             //Se meten las variables segu lo que haya metido el usuario
-            $nombre = $_POST['nombre'] ?? '';
-            $email  = $_POST['email'] ?? '';
-            $edad   = $_POST['edad'] ?? '';
+            $nombre = trim($_POST['nombre'] ?? '');
+            $email  = trim($_POST['email'] ?? '');
+            $edad   = trim($_POST['edad'] ?? '');
             //Se llama a la funcion validar todas las variables haber si da true o false    
             $error = $this->validar($nombre, $email, $edad);
             // Si da true se sigue si no no returnea nada
+       
         if ($error) {
-        $this->renderizar('alumnos/crear.php', [
-            'error' => $error,
-            'antiguos' => ['nombre' => $nombre, 'email' => $email, 'edad' => $edad]
+
+            $this->registrarError("Error de validación: " . $error);
+
+            $this->renderizar('alumnos/crear.php', [
+                'error' => $error,
+                'antiguos' => [
+                'nombre' => $nombre,
+                'email' => $email,
+                'edad' => $edad
+            ]
         ]);
-            return;
-        }
+
+        return;
+    }
         // fecha creacion del alumno se guarda y se crea el objeto alumno con los datos del usuairo
         $fecha = date('Y-m-d H:i:s'); // fecha actual
         $alumno = new Alumno($nombre, $email, $edad, $fecha);
@@ -63,9 +72,9 @@ class ControladorAlumnos{
     public function renderizar($vista, $datos = []){
         extract($datos);
 
-        $vistaContenindo = __DIR__ . '/../Vistas/' . $vista;
+        $vistaContenido = __DIR__ . '/../Vistas/' . $vista;
 
-        require __DIR__ .'/../vistas/layout.php';
+        require __DIR__ .'/../Vistas/layout.php';
     }
 
     public function registrarError($mensaje){   //IMPORTANTE APUNTAR ESTO
@@ -78,7 +87,7 @@ class ControladorAlumnos{
 
     public function validar($nombre, $email, $edad){
         // nombre mínimo 3 carácteres
-        if (strlen(($nombre) < 3)) {
+        if (strlen($nombre) < 3) {
             return "El nombre debe de tener al menos 3 carácteres";
         }
         // edad DEBE de ser un número

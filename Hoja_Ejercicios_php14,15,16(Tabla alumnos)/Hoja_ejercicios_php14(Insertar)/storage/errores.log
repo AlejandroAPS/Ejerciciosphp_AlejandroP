@@ -1,0 +1,5 @@
+2026-02-18 09:45:02 - SQLSTATE[22003]: Numeric value out of range: 1264 Out of range value for column 'edad' at row 1
+2026-02-18 09:57:24 - Error de validación: La edad debe de estar en formato de numero
+2026-02-18 09:57:26 - Error de validación: La edad debe de estar en formato de numero
+2026-02-18 09:57:40 - Error de validación: La edad debe de estar en formato de numero
+2026-02-18 09:57:50 - Error de validación: El email no es válido
