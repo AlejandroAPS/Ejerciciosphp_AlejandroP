@@ -66,6 +66,7 @@ class ControladorAlumnos{
     }
 
     public function correcto(){
+        // solo manda renderizar correcto.php y ya
         $this->renderizar('alumnos/correcto.php');
     }
     
@@ -85,6 +86,7 @@ class ControladorAlumnos{
         );
     }
 
+    //Validación de todo
     public function validar($nombre, $email, $edad){
         // nombre mínimo 3 carácteres
         if (strlen($nombre) < 3) {

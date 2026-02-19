@@ -55,16 +55,18 @@ class ControladorAlumnos {
     public function borrar() {
 
         try {
-
+            //primero mira que el usuario haya mandado informacion con el id = 'id'
             if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
                 throw new Exception("ID inválido para borrado.");
             }
-
+            //se almacena
             $id = $_GET['id'];
 
+            //se llama al metodo para poder borrar por id
             $modelo = new AccionesID();
             $filasAfectadas = $modelo->borrarPorId($id);
 
+            //Si no afecta a ninguna fila (no se ha ejecutado el delete), manda eror
             if ($filasAfectadas == 0) {
                 throw new Exception("No se pudo borrar el alumno.");
             }
@@ -84,11 +86,7 @@ class ControladorAlumnos {
     private function registrarError($mensaje) {
 
         $ruta = __DIR__ . '/../../storage/errores.log';
-
-        if (!file_exists(__DIR__ . '/../../storage')) {
-            mkdir(__DIR__ . '/../../storage', 0777, true);
-        }
-
+        // mete el error en erroes.log
         file_put_contents(
             $ruta,
             date('Y-m-d H:i:s') . " - " . $mensaje . PHP_EOL,

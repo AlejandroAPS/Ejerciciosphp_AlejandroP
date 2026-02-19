@@ -9,3 +9,6 @@
 2026-02-18 11:04:40 - ID inválido para borrado.
 2026-02-18 11:04:45 - ID inválido para borrado.
 2026-02-18 11:05:57 - ID inválido para borrado.
+2026-02-18 23:59:15 - SQLSTATE[HY000] [1049] Unknown database 'centro'
+2026-02-18 23:59:17 - SQLSTATE[HY000] [1049] Unknown database 'centro'
+2026-02-19 00:00:50 - ID inválido para borrado.
